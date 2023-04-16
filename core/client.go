@@ -41,7 +41,12 @@ func (c *Client) SendRequest(endpoint string, body interface{}) ([]byte, error) 
 		if res, err := c.HttpClient.Do(req); err != nil {
 			return nil, err
 		} else {
-			defer res.Body.Close()
+			defer func(Body io.ReadCloser) {
+				err := Body.Close()
+				if err != nil {
+					fmt.Println(err)
+				}
+			}(res.Body)
 			return io.ReadAll(res.Body)
 		}
 	}
