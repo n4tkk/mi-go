@@ -9,11 +9,11 @@ import (
 )
 
 type App struct {
-	Scheme     string
-	Host       string
-	Name       string
-	Callback   string
-	Permission Permission
+	//Scheme      string
+	MisskeyHost string
+	Name        string
+	Callback    string
+	Permission  Permission
 }
 type Permission []string
 
@@ -24,11 +24,8 @@ func (p *Permission) String() string {
 
 // GenerateRequestUrl は認証リクエストURLを生成します。
 func (a *App) GenerateRequestUrl(sessionId string) string {
-	u := url.URL{
-		Scheme: a.Scheme,
-		Host:   a.Host,
-		Path:   fmt.Sprintf("miauth/%s", sessionId),
-	}
+	u, _ := url.Parse(a.MisskeyHost)
+	u = u.JoinPath(fmt.Sprintf("miauth/%s", sessionId))
 	q := u.Query()
 	if a.Name != "" {
 		q.Set("name", a.Name)
