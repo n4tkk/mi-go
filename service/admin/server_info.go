@@ -7,22 +7,11 @@ import (
 )
 
 // GetServerInfo はサーバーの情報を取得します。
-func (s *Service) GetServerInfo() (*entity.ServerInfo, error) {
+func (s *Service) GetServerInfo() (entity.ServerInfo, error) {
 	endpoint := fmt.Sprintf("admin/server-info")
-	r, _ := s.Client.SendRequest(endpoint)
+	r, _ := s.Client.SendRequest(endpoint, nil)
 
-	serverInfo := struct {
-		Ok         bool `json:"ok"`
-		ServerInfo entity.ServerInfo
-		Error      interface{} `json:"error"`
-	}{}
-	if err := json.Unmarshal(r, &serverInfo); err != nil {
-		return nil, err
-	} else {
-		if serverInfo.Ok {
-			return &serverInfo.ServerInfo, nil
-		} else {
-			return nil, fmt.Errorf("server-info error: %v", serverInfo.Error)
-		}
-	}
+	var serverInfo entity.ServerInfo
+	err := json.Unmarshal(r, &serverInfo)
+	return serverInfo, err
 }

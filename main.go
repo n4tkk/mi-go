@@ -16,8 +16,13 @@ func main() {
 	sessionId := uuid.New()
 	client := core.NewClient(miHost+"/api/", "")
 
-	authUrl := fmt.Sprint(miHost, "/miauth/", sessionId)
-	fmt.Println(authUrl)
+	app := miauth.App{
+		Scheme: "http",
+		Host:   "localhost:3000",
+		Name:   "mi-go",
+	}
+	u := app.GenerateRequestUrl(sessionId.String())
+	fmt.Println(u)
 
 	fmt.Scanln()
 
@@ -28,6 +33,7 @@ func main() {
 	}
 
 	client.Token = token
+	fmt.Println(client.Token)
 
 	adminSvc := admin.NewService(client)
 	serverInfo, err := adminSvc.GetServerInfo()
