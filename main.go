@@ -17,9 +17,8 @@ func main() {
 	client := core.NewClient(miHost+"/api/", "")
 
 	app := miauth.App{
-		Scheme: "http",
-		Host:   "localhost:3000",
-		Name:   "mi-go",
+		MisskeyHost: "http://localhost:3000",
+		Name:        "mi-go",
 	}
 	u := app.GenerateRequestUrl(sessionId.String())
 	fmt.Println(u)
