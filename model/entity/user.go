@@ -45,4 +45,6 @@ type User struct {
 	SecurityKeys         bool          `json:"securityKeys"`
 	Roles                []interface{} `json:"roles"`
 	Memo                 interface{}   `json:"memo"`
+	IsAdmin              bool          `json:"isAdmin"`
+	IsModerator          bool          `json:"isModerator"`
 }
