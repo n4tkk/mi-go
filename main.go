@@ -1,4 +1,4 @@
-package misskey
+package main
 
 import (
 	"fmt"
@@ -6,6 +6,7 @@ import (
 	"github.com/n4tkk/mi-go/core"
 	"github.com/n4tkk/mi-go/service/admin"
 	"github.com/n4tkk/mi-go/service/miauth"
+	"github.com/n4tkk/mi-go/usecase"
 )
 
 var (
@@ -25,7 +26,7 @@ func main() {
 
 	fmt.Scanln()
 
-	token, err := GetToken(miHost, sessionId.String())
+	token, err := usecase.GetToken(miHost, sessionId.String())
 
 	client.Token = token
 	fmt.Println(client.Token)

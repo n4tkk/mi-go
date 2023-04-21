@@ -1,4 +1,4 @@
-package misskey
+package usecase
 
 import (
 	"github.com/n4tkk/mi-go/core"
