@@ -1,4 +1,4 @@
-package main
+package misskey
 
 import (
 	"fmt"
@@ -25,11 +25,7 @@ func main() {
 
 	fmt.Scanln()
 
-	miauthSvc := miauth.NewService(client)
-	token, err := miauthSvc.GetToken(sessionId.String())
-	if err != nil {
-		fmt.Println(err)
-	}
+	token, err := GetToken(miHost, sessionId.String())
 
 	client.Token = token
 	fmt.Println(client.Token)

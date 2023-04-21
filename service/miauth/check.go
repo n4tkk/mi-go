@@ -9,13 +9,19 @@ import (
 )
 
 type App struct {
-	//Scheme      string
 	MisskeyHost string
 	Name        string
 	Callback    string
 	Permission  Permission
 }
 type Permission []string
+
+type Miauth struct {
+	Ok    bool        `json:"ok"`
+	Token string      `json:"token"`
+	User  entity.User `json:"user"`
+	Error interface{} `json:"error"`
+}
 
 // String はPermissionを文字列に変換します。
 func (p *Permission) String() string {
@@ -45,12 +51,7 @@ func (s *Service) GetToken(sessionId string) (string, error) {
 	endpoint := fmt.Sprintf("miauth/%s/check", sessionId)
 	r, _ := s.Client.SendRequest(endpoint, nil)
 
-	miauth := struct {
-		Ok    bool        `json:"ok"`
-		Token string      `json:"token"`
-		User  entity.User `json:"user"`
-		Error interface{} `json:"error"`
-	}{}
+	var miauth Miauth
 	if err := json.Unmarshal(r, &miauth); err != nil {
 		return "", err
 	} else {
