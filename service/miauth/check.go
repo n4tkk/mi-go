@@ -62,3 +62,20 @@ func (s *Service) GetToken(sessionId string) (string, error) {
 		}
 	}
 }
+
+// GetTokenAndUser は指定したセッションIDに対応するトークンとユーザー情報を取得します。
+func (s *Service) GetTokenAndUser(sessionId string) (string, entity.User, error) {
+	endpoint := fmt.Sprintf("miauth/%s/check", sessionId)
+	r, _ := s.Client.SendRequest(endpoint, nil)
+
+	var miauth Miauth
+	if err := json.Unmarshal(r, &miauth); err != nil {
+		return "", entity.User{}, err
+	} else {
+		if miauth.Ok {
+			return miauth.Token, miauth.User, nil
+		} else {
+			return "", entity.User{}, fmt.Errorf("miauth error: %v", miauth.Error)
+		}
+	}
+}
