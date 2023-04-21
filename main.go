@@ -26,7 +26,7 @@ func main() {
 
 	fmt.Scanln()
 
-	token, err := usecase.GetToken(miHost, sessionId.String())
+	token, _, err := usecase.GetTokenAndUser(miHost, sessionId.String())
 
 	client.Token = token
 	fmt.Println(client.Token)
@@ -38,4 +38,6 @@ func main() {
 	} else {
 		fmt.Println(serverInfo)
 	}
+
+	fmt.Println(usecase.GetMe(miHost, token))
 }
