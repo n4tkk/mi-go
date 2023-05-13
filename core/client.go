@@ -27,7 +27,8 @@ func NewClient(baseUrl string, token string) *Client {
 // SendRequest は指定したエンドポイントに対してリクエストを送信します。
 func (c *Client) SendRequest(endpoint string, body interface{}) ([]byte, error) {
 	baseUrl, _ := url.Parse(c.BaseURL)
-	if req, err := http.NewRequest(http.MethodPost, path.Join(baseUrl.Path, endpoint), nil); err != nil {
+	u := baseUrl.JoinPath(path.Join(baseUrl.Path, endpoint))
+	if req, err := http.NewRequest(http.MethodPost, u.String(), nil); err != nil {
 		return nil, err
 	} else {
 		if c.Token != "" {
