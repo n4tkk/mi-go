@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"net/url"
+	"path"
 	"strings"
 )
 
@@ -24,7 +26,8 @@ func NewClient(baseUrl string, token string) *Client {
 
 // SendRequest は指定したエンドポイントに対してリクエストを送信します。
 func (c *Client) SendRequest(endpoint string, body interface{}) ([]byte, error) {
-	if req, err := http.NewRequest(http.MethodPost, c.BaseURL+endpoint, nil); err != nil {
+	baseUrl, _ := url.Parse(c.BaseURL)
+	if req, err := http.NewRequest(http.MethodPost, path.Join(baseUrl.Path, endpoint), nil); err != nil {
 		return nil, err
 	} else {
 		if c.Token != "" {
